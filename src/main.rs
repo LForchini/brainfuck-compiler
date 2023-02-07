@@ -105,7 +105,7 @@ fn main() {
     log::trace!("Using profile: {:#?}", profile);
 
     let asm = generate_asm(profile, optimised_tokens);
-    log::debug!("Generated {:#?} lines of assembly", asm.len());
+    log::debug!("Generated assembly");
     log::trace!("Assembly: {:#?}", asm);
 
     if args.output_assembly {
