@@ -1,0 +1,41 @@
+{
+    "name": "elf_32",
+
+    "setup": [
+        "SECTION .bss",
+        "buf_start: resb 40000000",
+        "SECTION .text",
+        "global _start",
+        "_start:",
+        "mov edi, buf_start"
+    ],
+    "teardown": ["mov ebx, 0", "mov eax, 1", "int 80h"],
+
+    "ptradd": ["add edi, {}"],
+    "ptrsub": ["sub edi, {}"],
+    "add": ["add byte [edi], {}"],
+    "sub": ["sub byte [edi], {}"],
+    "loopstart": ["cmp byte [edi], 0", "jz lbl_e_{}", "lbl_s_{}:"],
+    "loopend": ["cmp byte [edi], 0", "jnz lbl_s_{}", "lbl_e_{}:"],
+    "putchar": [
+        "mov eax, 0",
+        "mov al, [edi]",
+        "push eax",
+        "mov eax, 4",
+        "mov ebx, 1",
+        "mov ecx, esp",
+        "mov edx, 1",
+        "int 80h"
+    ],
+    "getchar": [
+        "mov edx, 1",
+        "mov ecx, edi",
+        "mov ebx, 0",
+        "mov eax, 3",
+        "int 80h"
+    ],
+
+    "nasm_args": ["-f", "elf"],
+    "linker": "ld",
+    "linker_args": ["-m", "elf_i386"]
+}
