@@ -93,7 +93,6 @@ fn cancel_out(tokens: &[Token]) -> Vec<Token> {
 
     let mut accumulator = None;
     for token in tokens {
-        log::trace!("(tok: {:?}, acc: {:?})", token, accumulator);
         accumulator = match (token, accumulator) {
             (Token::PtrAdd(a), Some(Token::PtrSub(b))) => match a.cmp(&b) {
                 std::cmp::Ordering::Less => Some(Token::PtrAdd(a - b)),

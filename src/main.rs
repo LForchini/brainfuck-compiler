@@ -70,15 +70,11 @@ fn generate_asm(profile: &Profile, tokens: Vec<Token>) -> Vec<String> {
 }
 
 fn main() {
-    simple_logger::SimpleLogger::new()
-        .with_level(log::LevelFilter::Warn)
-        .env()
-        .init()
-        .unwrap();
+    pretty_env_logger::init();
     log::info!("Enabled logging");
 
     let args = Args::parse();
-    log::info!("Read args: {:#?}", args);
+    log::info!("Read args: {:?}", args);
 
     let (infile, asmfile, execfile) = gen_file_names(&args);
 
@@ -91,11 +87,9 @@ fn main() {
 
     let tokens = lex::lex(&file_contents);
     log::debug!("Lexed to {:#?} symbols", tokens.len());
-    log::trace!("Tokens: {:?}", tokens);
 
     let optimised_tokens = lex::optimise_tokens(tokens);
     log::debug!("Optimised to {:#?} symbols", optimised_tokens.len());
-    log::trace!("Optimised tokens: {:?}", optimised_tokens);
 
     let profile = if let Some(profile_name) = &args.profile {
         Profile::get_by_string(profile_name).expect("Profile not found")
@@ -106,7 +100,6 @@ fn main() {
 
     let asm = generate_asm(profile, optimised_tokens);
     log::debug!("Generated assembly");
-    log::trace!("Assembly: {:#?}", asm);
 
     if args.output_assembly {
         Profile::write_asm(&asm, Path::new(&asmfile)).unwrap();
