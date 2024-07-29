@@ -1,6 +1,6 @@
 # BFC
 
-My basic brainfuck compiler.
+My basic brainfuck ([wikipedia](https://wikipedia.org/wiki/Brainfuck)) compiler.
 It has a few optimisations, noted below.
 Also the assembly is probably quite inefficient, however it works with the tic-tac-toe and mandelbrot examples.
 
